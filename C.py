@@ -51,8 +51,6 @@ def factorization_third(x):
 def dist(a,b):
     x=hash_fac[a]
     y=hash_fac[b]
-    # a=factorization_third(a)
-    # b=factorization_third(b)
     a=copy.deepcopy(x)
     a.reverse()
     b=copy.deepcopy(y)

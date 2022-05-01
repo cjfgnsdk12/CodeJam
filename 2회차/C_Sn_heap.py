@@ -28,6 +28,9 @@ def is_possible(first,second,sn,heap):
     front_last=max(first,second)
     back_sum=sn[-1]-sn[front_last]
 
+    if back_sum==0:
+        return True,0
+        
     if heap[0][1] == v_list[first]+v_list[second] + (back_sum -heap[0][1]) +1:
         # heap[0]이 계속 반복되어야함
         max_flag =True
@@ -38,9 +41,11 @@ def is_possible(first,second,sn,heap):
                 max_idx=i
         result_arr.append(max_idx)
         v_list[max_idx]-=1
-        return max_idx
+
+        target=min(first,second)
+        return max_idx,target
     else:
-        return True
+        return True,0
     
 
 
@@ -74,15 +79,17 @@ for _ in range(T):
     # max 반복조건 flag
     max_flag=False
     max_val=True
+    last_target=0
+    max_chance=False
     # 2개짜리는 예외로 해야할수도있음, # 마지막 처리도 생각해야함
     while True:
         # 종료 조건
-        if len(result_arr)==sn[-1]:
+        if len(result_arr)==(sn[-1]+1):
             break
 
         # first, second 반복되는 구간
         if max_flag==False:
-            max_val=is_possible(first,second,sn,heap)
+            max_val, last_target=is_possible(first,second,sn,heap)
             if max_val==True:
                 # first, second 위치 넘김
                 if v_list[first]==0:
@@ -108,31 +115,26 @@ for _ in range(T):
                 result_arr.append(target)
                 v_list[target]-=1
 
-                print(result_arr)
 
         else:
-            # 한번 최대값 넣고 이후 반복
-            max_val=heap[0][1]
-            for i in range(max(first,second),len(v_list)):
-                if max_val== 
-            result_arr.append(max_val)
-            v_list[max_val]-=1
-
+            # 한번 최대값은 위에서 넣었음
+            # 이후 반복
+            if v_list[last_target]==0:
+                while v_list[last_target]==0 or last_target==max_val:
+                    last_target+=1
+                    if last_target==len(v_list):
+                        break
+            if max_chance==False:
+                result_arr.append(last_target)
+                v_list[last_target]-=1
+                max_chance=True
+            else:
+                result_arr.append(max_val)
+                v_list[max_val]-=1
+                max_chance=False
             
-
-
-            print('힙 최대값 반복')
-            break
-
-
-
-
         
-    
-    
-
-    result_arr=[]
-
+    print(result_arr)
 
     
     
